@@ -1,73 +1,69 @@
-import './providers/movies_provider.dart';
-import './theme/app_theme.dart';
-import './widgets/movie_poster.dart';
-
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
-void main() {
-  runApp(
-    ChangeNotifierProvider(
-      create: (_) => MoviesProvider()..loadAll(),
-      child: const MyApp(),
-    ),
-  );
-}
+import '../models/movie.dart';
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MoviePoster extends StatelessWidget {
+  // Film o serie TV da visualizzare
+  final Movie movie;
 
-  @override
-  Widget build(BuildContext context) {
-    // TODO: implement build
-    return MaterialApp(
-      title: 'Cosmos Cinema',
-      theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.dark,
-      home: const ApiTestScreen(),
-    );
-  }
-}
+  // Funzione facoltativa da eseguire al clic
+  final VoidCallback? onTap;
 
-class ApiTestScreen extends StatelessWidget {
-  const ApiTestScreen({super.key});
+  // Costruttore
+  const MoviePoster({
+    super.key,
+    required this.movie,
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
-    // TODO: implement build
-    final movies = context.watch<MoviesProvider>();
+    return AspectRatio(
+      // Proporzioni verticali della locandina
+      aspectRatio: 2 / 3,
 
-    if (movies.isLoading) {
-      return const Scaffold(body: Center(child: CircularProgressIndicator()));
-    }
+      child: InkWell(
+        // Gestisce il clic sul poster
+        onTap: onTap,
+        borderRadius: BorderRadius.circular(20),
 
-    if (movies.errorMessage != null) {
-      return Scaffold(body: Center(child: Text(movies.errorMessage!)));
-    }
-    return Scaffold(
-      appBar: AppBar(title: const Text('Test API')),
-      body: ListView(
-        children: [
-          Text('Popular Movies: ${movies.popularMovies.length}'),
-          Text('Popular Series: ${movies.popularSeries.length}'),
-          Text('Upcoming Movies: ${movies.upcomingMovies.length}'),
-          Text('On the air Series: ${movies.onTheAirSeries.length}'),
-          Text('Top rated Movies: ${movies.topRatedMovies.length}'),
-          Text('Top rated Series: ${movies.topRatedSeries.length}'),
-          const Divider(),
-          if (movies.popularMovies.isNotEmpty) ...[
-            Text('Poster path: ${movies.popularMovies.first.posterPath}'),
-            Text('Poster URL: ${movies.popularMovies.first.posterUrl}'),
-          ],
+        child: ClipRRect(
+          // Arrotonda gli angoli
+          borderRadius: BorderRadius.circular(20),
 
-          for (final m in movies.popularSeries.take(3)) MoviePoster(movie: m),
-          for (final m in movies.popularMovies.take(3)) MoviePoster(movie: m),
-          for (final m in movies.upcomingMovies.take(3)) MoviePoster(movie: m),
-          for (final m in movies.onTheAirSeries.take(3)) MoviePoster(movie: m),
-          for (final m in movies.topRatedMovies.take(3)) MoviePoster(movie: m),
-          for (final m in movies.topRatedSeries.take(3)) MoviePoster(movie: m),
-        ],
+          child: movie.posterUrl != null
+              ? Image.network(
+                  // Carica l'immagine da TMDB
+                  movie.posterUrl!,
+
+                  // Adatta l'immagine allo spazio disponibile
+                  fit: BoxFit.cover,
+
+                  // Gestisce eventuali errori di caricamento
+                  errorBuilder: (context, error, stackTrace) {
+                    return Container(
+                      color: Theme.of(context).colorScheme.surface,
+                      child: Center(
+                        child: Text(
+                          movie.title,
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                    );
+                  },
+                )
+
+              // Se non esiste una locandina
+              : Container(
+                  color: Theme.of(context).colorScheme.surface,
+                  child: Center(
+                    child: Text(
+                      movie.title,
+                      textAlign: TextAlign.center,
+                    ),
+                  ),
+                ),
+        ),
       ),
     );
   }
