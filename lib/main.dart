@@ -1,5 +1,6 @@
 import './providers/movies_provider.dart';
 import './theme/app_theme.dart';
+import './widgets/movie_poster.dart';
 
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -55,7 +56,17 @@ class ApiTestScreen extends StatelessWidget {
           Text('Top rated Movies: ${movies.topRatedMovies.length}'),
           Text('Top rated Series: ${movies.topRatedSeries.length}'),
           const Divider(),
-          for (final m in movies.popularMovies.take(6)) Text(m.title),
+          if (movies.popularMovies.isNotEmpty) ...[
+            Text('Poster path: ${movies.popularMovies.first.posterPath}'),
+            Text('Poster URL: ${movies.popularMovies.first.posterUrl}'),
+          ],
+
+          for (final m in movies.popularSeries.take(3)) MoviePoster(movie: m),
+          for (final m in movies.popularMovies.take(3)) MoviePoster(movie: m),
+          for (final m in movies.upcomingMovies.take(3)) MoviePoster(movie: m),
+          for (final m in movies.onTheAirSeries.take(3)) MoviePoster(movie: m),
+          for (final m in movies.topRatedMovies.take(3)) MoviePoster(movie: m),
+          for (final m in movies.topRatedSeries.take(3)) MoviePoster(movie: m),
         ],
       ),
     );

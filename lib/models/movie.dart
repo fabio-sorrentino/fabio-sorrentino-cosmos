@@ -18,9 +18,11 @@ class Movie {
   });
 
   String? get posterUrl =>
-      posterPath == null ? null : 'https://image.tmdb.org/t/p/w109$posterPath';
+      posterPath == null ? null : 'https://image.tmdb.org/t/p/w342$posterPath';
 
-  factory Movie.fromJson(Map<String, dynamic> json, {required bool isSeries}) {
+  factory Movie.fromJson(
+    Map<String, dynamic> json, {
+      required bool isSeries,}) {
     return Movie(
       id: json['id'],
       title: json['title'] ?? json['name'] ?? '',
@@ -28,6 +30,7 @@ class Movie {
       isSeries: isSeries,
       voteAverage: (json['vote_average'] ?? 0).toDouble(),
       releaseDate: json['release_date'] ?? json['first_air_date'],
+      posterPath: json['poster_path'],
     );
   }
 }
