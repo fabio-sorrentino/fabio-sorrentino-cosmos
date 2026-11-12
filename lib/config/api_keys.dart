@@ -1,4 +1,0 @@
-class ApiKeys {
-  static const tmdbToken =
-      'eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI4M2I3MzdiMDM1OWNiZDg0MjE4NmZiN2I1YjliNDY1ZSIsIm5iZiI6MTc5MzgwODcyMS44NzIsInN1YiI6IjZhZWI1OTUxOTNhODNmZTQwYmMwNmFjYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.ta4PPILuy7Zx-huHtHs4nxXAUNoMHPxPOp02nWDa6Aw';
-}

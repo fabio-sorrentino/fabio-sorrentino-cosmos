@@ -23,7 +23,7 @@ class TmdbService {
       },
     );
     if (response.statusCode != 200) {
-      throw Exception('Errore TMDB: ${response.statusCode}');
+      throw Exception('Error TMDB: ${response.statusCode}');
     }
 
     final data = jsonDecode(response.body) as Map<String, dynamic>;
