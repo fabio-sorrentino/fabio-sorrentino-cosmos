@@ -1,69 +1,79 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import './providers/movies_provider.dart';
+import './theme/app_theme.dart';
+import './widgets/movie_poster.dart';
 
-import '../models/movie.dart';
+void main() {
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => MoviesProvider()..loadAll(),
+      child: const MyApp(),
+    ),
+  );
+}
 
-class MoviePoster extends StatelessWidget {
-  // Film o serie TV da visualizzare
-  final Movie movie;
-
-  // Funzione facoltativa da eseguire al clic
-  final VoidCallback? onTap;
-
-  // Costruttore
-  const MoviePoster({
-    super.key,
-    required this.movie,
-    this.onTap,
-  });
+class MyApp extends StatelessWidget {
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      // Proporzioni verticali della locandina
-      aspectRatio: 2 / 3,
+    return MaterialApp(
+      title: 'Cosmos Cinema',
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: ThemeMode.dark,
+      home: const ApiTestScreen(),
+    );
+  }
+}
 
-      child: InkWell(
-        // Gestisce il clic sul poster
-        onTap: onTap,
-        borderRadius: BorderRadius.circular(20),
+// SCHERMATA TEMPORANEA: serve solo a verificare API e widget, poi la elimini
+class ApiTestScreen extends StatelessWidget {
+  const ApiTestScreen({super.key});
 
-        child: ClipRRect(
-          // Arrotonda gli angoli
-          borderRadius: BorderRadius.circular(20),
+  @override
+  Widget build(BuildContext context) {
+    final movies = context.watch<MoviesProvider>();
 
-          child: movie.posterUrl != null
-              ? Image.network(
-                  // Carica l'immagine da TMDB
-                  movie.posterUrl!,
+    if (movies.isLoading) {
+      return const Scaffold(body: Center(child: CircularProgressIndicator()));
+    }
+    if (movies.errorMessage != null) {
+      return Scaffold(body: Center(child: Text(movies.errorMessage!)));
+    }
 
-                  // Adatta l'immagine allo spazio disponibile
-                  fit: BoxFit.cover,
+    return Scaffold(
+      appBar: AppBar(title: const Text('Test API')),
+      body: ListView(
+        padding: const EdgeInsets.all(16),
+        children: [
+          Text('Film popolari: ${movies.popularMovies.length}'),
+          Text('Serie popolari: ${movies.popularSeries.length}'),
+          Text('Film in uscita: ${movies.upcomingMovies.length}'),
+          Text('Serie in onda: ${movies.onTheAirSeries.length}'),
+          Text('Film top rated: ${movies.topRatedMovies.length}'),
+          Text('Serie top rated: ${movies.topRatedSeries.length}'),
+          const Divider(),
 
-                  // Gestisce eventuali errori di caricamento
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      color: Theme.of(context).colorScheme.surface,
-                      child: Center(
-                        child: Text(
-                          movie.title,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    );
-                  },
-                )
-
-              // Se non esiste una locandina
-              : Container(
-                  color: Theme.of(context).colorScheme.surface,
-                  child: Center(
-                    child: Text(
-                      movie.title,
-                      textAlign: TextAlign.center,
+          
+          SizedBox(
+            height: 180,
+            child: ListView(
+              scrollDirection: Axis.horizontal,
+              children: [
+                for (final m in movies.popularMovies.take(5))
+                  Padding(
+                    padding: const EdgeInsets.only(right: 8),
+                    child: MoviePoster(
+                      movie: m,
+                      onTap: () => debugPrint('Toccato: ${m.title}'),
                     ),
                   ),
-                ),
-        ),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
