@@ -3,6 +3,9 @@ import 'package:provider/provider.dart';
 import './providers/movies_provider.dart';
 import './theme/app_theme.dart';
 import './widgets/movie_poster.dart';
+import './widgets/primary_button.dart';
+import './widgets/custom_text_field.dart';
+import './screens/login_screen.dart';
 
 void main() {
   runApp(
@@ -23,7 +26,7 @@ class MyApp extends StatelessWidget {
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
-      home: const ApiTestScreen(),
+      home: const LoginScreen(),
     );
   }
 }
@@ -55,8 +58,6 @@ class ApiTestScreen extends StatelessWidget {
           Text('Film top rated: ${movies.topRatedMovies.length}'),
           Text('Serie top rated: ${movies.topRatedSeries.length}'),
           const Divider(),
-
-          
           SizedBox(
             height: 180,
             child: ListView(
@@ -73,6 +74,13 @@ class ApiTestScreen extends StatelessWidget {
               ],
             ),
           ),
+          const SizedBox(height: 16),
+          PrimaryButton(
+            label: 'Accedi',
+            onPressed: () => debugPrint('Bottone premuto'),
+          ),
+          const SizedBox(height: 8),
+          const PrimaryButton(label: 'Disattivato'),
         ],
       ),
     );
