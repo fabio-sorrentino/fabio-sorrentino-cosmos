@@ -1,27 +1,20 @@
 import 'package:flutter/material.dart';
 
-class PrimaryButton extends StatelessWidget{
-    final String label;
-    final VoidCallback? onPressed;
+class PrimaryButton extends StatelessWidget {
+  final String label;
+  final VoidCallback? onPressed;
 
-    const PrimaryButton({
-        super.key,
-        required this.label,
-        this.onPressed,
-    });
+  const PrimaryButton({super.key, required this.label, this.onPressed});
 
-    @override
+  @override
   Widget build(BuildContext context) {
     return SizedBox(
-        width: double.infinity,
-        child: FilledButton(
-            onPressed: onPressed,
-            child: Text(
-                label,
-                style: const TextStyle(fontWeight: FontWeight.w700),
-            ),
-            
-        ),
+      width: 208,
+      height: 56,
+      child: FilledButton(
+        onPressed: onPressed,
+        child: Text(label, style: const TextStyle(fontWeight: FontWeight.w700)),
+      ),
     );
   }
 }
