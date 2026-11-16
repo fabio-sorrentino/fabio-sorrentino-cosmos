@@ -4,6 +4,8 @@ import '../widgets/custom_text_field.dart';
 
 import '../widgets/primary_button.dart';
 
+import '../theme/app_theme.dart';
+
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
@@ -44,7 +46,16 @@ class LoginScreenState extends State<LoginScreen> {
                       fit: BoxFit.contain,
                     ),
                     const SizedBox(height: 12),
-                    const Text('COSMOS CINEMA'),
+                    Text(
+                      'COSMOS CINEMA',
+                      style: Theme.of(context).textTheme.titleLarge,
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Accedi al tuo account',
+                      style: Theme.of(context).textTheme.bodyMedium,
+                    ),
+                    const SizedBox(height: 24),
                     CustomTextField(
                       controller: emailController,
                       hintText: 'Email',
@@ -59,7 +70,12 @@ class LoginScreenState extends State<LoginScreen> {
                       prefixIcon: Icons.lock_outlined,
                     ),
                     const SizedBox(height: 12),
-                    PrimaryButton(label: 'Accedi')
+                    PrimaryButton(
+                      label: 'Accedi',
+                      onPressed: () {
+                        debugPrint('Pulsante Accedi premuto');
+                      },
+                    ),
                   ],
                 ),
               ),
