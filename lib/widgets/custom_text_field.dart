@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 class CustomTextField extends StatefulWidget {
   final String hintText;
   final IconData prefixIcon;
@@ -13,6 +15,7 @@ class CustomTextField extends StatefulWidget {
     required this.isPassword,
     required this.prefixIcon,
   });
+
   @override
   State<CustomTextField> createState() {
     return CustomTextFieldState();
@@ -24,24 +27,56 @@ class CustomTextFieldState extends State<CustomTextField> {
 
   @override
   Widget build(BuildContext context) {
-    return TextField(
-      obscureText: widget.isPassword ? isObscured : false,
-      controller: widget.controller,
-      decoration: InputDecoration(
-        hintText: widget.hintText,
-        prefixIcon: Icon(widget.prefixIcon),
-        suffixIcon: widget.isPassword
-            ? IconButton(
-                onPressed: () {
-                  setState(() {
-                    isObscured = !isObscured;
-                  });
-                },
-                icon: Icon(
-                  isObscured ? Icons.visibility_off_outlined : Icons.visibility_outlined,
-                ),
-              )
-            : null,
+    return SizedBox(
+      width: 355,
+      height: 56,
+
+      child: TextField(
+        controller: widget.controller,
+
+        // Colore del testo digitato
+        style: const TextStyle(color: AppColors.primary, fontSize: 16),
+
+        // Colore del cursore
+        cursorColor: AppColors.primary,
+
+        // Nasconde il testo se è una password
+        obscureText: widget.isPassword ? isObscured : false,
+
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(20),
+            borderSide: BorderSide.none,
+          ),
+          fillColor: AppColors.lightBg.withValues(alpha: 0.8),
+
+          // Colore delle icone
+          prefixIconColor: AppColors.primary,
+          suffixIconColor: AppColors.primary,
+
+          // Colore del suggerimento
+          hintStyle: const TextStyle(color: AppColors.primary),
+
+          hintText: widget.hintText,
+
+          prefixIcon: Icon(widget.prefixIcon),
+
+          // Pulsante mostra/nascondi password
+          suffixIcon: widget.isPassword
+              ? IconButton(
+                  onPressed: () {
+                    setState(() {
+                      isObscured = !isObscured;
+                    });
+                  },
+                  icon: Icon(
+                    isObscured
+                        ? Icons.visibility_off_outlined
+                        : Icons.visibility_outlined,
+                  ),
+                )
+              : null,
+        ),
       ),
     );
   }

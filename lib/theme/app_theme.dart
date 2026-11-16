@@ -72,7 +72,12 @@ class AppTheme {
     return ThemeData(
       useMaterial3: true,
       brightness: brightness,
+
+      // Font principale
+      fontFamily: 'Inter',
+
       scaffoldBackgroundColor: background,
+
       colorScheme: ColorScheme(
         brightness: brightness,
         primary: primary,
@@ -84,15 +89,46 @@ class AppTheme {
         error: AppColors.red,
         onError: AppColors.white,
       ),
+
+      // Stili dei testi
       textTheme: TextTheme(
+        displayLarge: TextStyle(
+          color: text,
+          fontSize: 32,
+          fontWeight: FontWeight.w900,
+        ),
         titleLarge: TextStyle(
           color: text,
-          fontSize: 20,
-          fontWeight: FontWeight.w700,
+          fontSize: 25,
+          fontWeight: FontWeight.w900,
         ),
-        bodyMedium: TextStyle(color: text, fontSize: 14),
-        bodySmall: TextStyle(color: textMuted, fontSize: 12),
+        titleMedium: TextStyle(
+          color: text,
+          fontSize: 20,
+          fontWeight: FontWeight.w600,
+        ),
+        bodyLarge: TextStyle(
+          color: text,
+          fontSize: 16,
+          fontWeight: FontWeight.w400,
+        ),
+        bodyMedium: TextStyle(
+          color: text,
+          fontSize: 14,
+          fontWeight: FontWeight.w400,
+        ),
+        bodySmall: TextStyle(
+          color: textMuted,
+          fontSize: 12,
+          fontWeight: FontWeight.w400,
+        ),
+        labelLarge: TextStyle(
+          color: text,
+          fontSize: 16,
+          fontWeight: FontWeight.w600,
+        ),
       ),
+
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: primary,
@@ -101,14 +137,26 @@ class AppTheme {
           padding: const EdgeInsets.symmetric(vertical: 12),
         ),
       ),
+
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: surface,
+
+        // Colore del testo suggerimento (Email, Password)
+        hintStyle: TextStyle(color: textMuted, fontSize: 14),
+
+        // Colore dell'icona iniziale
+        prefixIconColor: textMuted,
+
+        // Colore dell'icona finale (es. mostra/nascondi password)
+        suffixIconColor: textMuted,
+
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(8),
           borderSide: BorderSide.none,
         ),
       ),
+
       bottomNavigationBarTheme: BottomNavigationBarThemeData(
         backgroundColor: background,
         selectedItemColor: primary,
