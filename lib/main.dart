@@ -6,6 +6,7 @@ import './widgets/movie_poster.dart';
 import './widgets/primary_button.dart';
 import './widgets/custom_text_field.dart';
 import './screens/login_screen.dart';
+import './widgets/main_shell.dart';
 
 void main() {
   runApp(
@@ -22,11 +23,12 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Cosmos Cinema',
+      debugShowCheckedModeBanner: false,
+      title: 'COSMOS CINEMA',
       theme: AppTheme.light,
       darkTheme: AppTheme.dark,
       themeMode: ThemeMode.dark,
-      home: const LoginScreen(),
+      home: const MainShell(),
     );
   }
 }
