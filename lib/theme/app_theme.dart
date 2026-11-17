@@ -52,7 +52,7 @@ class AppTheme {
 
   static final ThemeData light = _build(
     brightness: Brightness.light,
-    background: AppColors.disabledSurfaceLight,
+    background: AppColors.surfaceLight,
     surface: AppColors.surfaceLight,
     primary: AppColors.secondary,
     onPrimary: AppColors.white,
