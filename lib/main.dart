@@ -26,9 +26,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       title: 'COSMOS CINEMA',
       theme: AppTheme.light,
-      darkTheme: AppTheme.dark,
-      themeMode: ThemeMode.dark,
-      home: const MainShell(),
+      darkTheme: AppTheme.light,
+      themeMode: ThemeMode.light,
+      home: const LoginScreen(),
     );
   }
 }
