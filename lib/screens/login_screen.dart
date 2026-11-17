@@ -1,23 +1,55 @@
 import 'package:flutter/material.dart';
 
+import '../data/demo_user.dart';
 import '../widgets/custom_text_field.dart';
-
+import '../widgets/main_shell.dart';
 import '../widgets/primary_button.dart';
-
-import '../theme/app_theme.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
 
   @override
-  State<LoginScreen> createState() {
-    return LoginScreenState();
-  }
+  State<LoginScreen> createState() => LoginScreenState();
 }
 
 class LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  // Messaggio d'errore mostrato sotto i campi (null = nessun errore)
+  String? _error;
+
+  @override
+  void dispose() {
+    emailController.dispose();
+    passwordController.dispose();
+    super.dispose();
+  }
+
+  void _submit() {
+    final email = emailController.text.trim();
+    final password = passwordController.text;
+
+    String? error;
+    if (email.isEmpty || password.isEmpty) {
+      error = 'Inserisci email e password';
+    } else if (!RegExp(r'^[^@\s]+@[^@\s]+\.[^@\s]+$').hasMatch(email)) {
+      error = 'Email non valida';
+    } else if (email != DemoUser.email || password != DemoUser.password) {
+      error = 'Email o password errate';
+    }
+
+    if (error != null) {
+      setState(() => _error = error);
+      return;
+    }
+
+    // Credenziali giuste: apre la Home e toglie il Login dalla cronologia
+    Navigator.pushReplacement(
+      context,
+      MaterialPageRoute(builder: (_) => const MainShell()),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -70,12 +102,21 @@ class LoginScreenState extends State<LoginScreen> {
                       prefixIcon: Icons.lock_outlined,
                     ),
                     const SizedBox(height: 12),
-                    PrimaryButton(
-                      label: 'Accedi',
-                      onPressed: () {
-                        debugPrint('Pulsante Accedi premuto');
-                      },
-                    ),
+
+                    // Messaggio d'errore (compare solo se _error non è null)
+                    if (_error != null)
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 12),
+                        child: Text(
+                          _error!,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            color: Theme.of(context).colorScheme.error,
+                          ),
+                        ),
+                      ),
+
+                    PrimaryButton(label: 'Accedi', onPressed: _submit),
                   ],
                 ),
               ),
@@ -84,11 +125,5 @@ class LoginScreenState extends State<LoginScreen> {
         ),
       ),
     );
-  }
-
-  void dispose() {
-    emailController.dispose();
-    passwordController.dispose();
-    super.dispose();
   }
 }
