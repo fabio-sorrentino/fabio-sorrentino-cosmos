@@ -48,6 +48,11 @@ class AppTheme {
     onPrimary: AppColors.primary,
     text: AppColors.white,
     textMuted: AppColors.disabledLightBg,
+    // campi di testo e bottone
+    fieldFill: AppColors.hoverPrimary,
+    onField: AppColors.white,
+    buttonBg: AppColors.lightBg,
+    onButton: AppColors.primary,
   );
 
   static final ThemeData light = _build(
@@ -58,6 +63,11 @@ class AppTheme {
     onPrimary: AppColors.white,
     text: AppColors.primary,
     textMuted: AppColors.activeSecondary,
+    // campi di testo e bottone (come il Figma)
+    fieldFill: AppColors.disabledPrimary,
+    onField: AppColors.lightBg,
+    buttonBg: AppColors.primary,
+    onButton: AppColors.white,
   );
 
   static ThemeData _build({
@@ -68,6 +78,10 @@ class AppTheme {
     required Color onPrimary,
     required Color text,
     required Color textMuted,
+    required Color fieldFill,
+    required Color onField,
+    required Color buttonBg,
+    required Color onButton,
   }) {
     return ThemeData(
       useMaterial3: true,
@@ -129,30 +143,29 @@ class AppTheme {
         ),
       ),
 
+      // Bottoni pieni ("Accedi", "Segna come visto")
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
-          backgroundColor: primary,
-          foregroundColor: onPrimary,
+          backgroundColor: buttonBg,
+          foregroundColor: onButton,
           shape: const StadiumBorder(),
           padding: const EdgeInsets.symmetric(vertical: 12),
         ),
       ),
 
+      // Campi di testo (Email, Password)
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: surface,
-
-        // Colore del testo suggerimento (Email, Password)
-        hintStyle: TextStyle(color: textMuted, fontSize: 14),
-
-        // Colore dell'icona iniziale
-        prefixIconColor: textMuted,
-
-        // Colore dell'icona finale (es. mostra/nascondi password)
-        suffixIconColor: textMuted,
-
+        fillColor: fieldFill,
+        hintStyle: TextStyle(
+          color: onField,
+          fontSize: 14,
+          fontWeight: FontWeight.w600,
+        ),
+        prefixIconColor: onField,
+        suffixIconColor: onField,
         border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(8),
+          borderRadius: BorderRadius.circular(16),
           borderSide: BorderSide.none,
         ),
       ),
