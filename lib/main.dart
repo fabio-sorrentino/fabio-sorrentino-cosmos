@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'COSMOS CINEMA',
-      theme: AppTheme.light,
+      theme: AppTheme.dark,
       darkTheme: AppTheme.light,
       themeMode: ThemeMode.light,
       home: const LoginScreen(),
