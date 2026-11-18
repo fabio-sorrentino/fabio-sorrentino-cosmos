@@ -7,11 +7,15 @@ import './widgets/primary_button.dart';
 import './widgets/custom_text_field.dart';
 import './screens/login_screen.dart';
 import './widgets/main_shell.dart';
+import './providers/theme_provider.dart';
 
 void main() {
   runApp(
-    ChangeNotifierProvider(
-      create: (_) => MoviesProvider()..loadAll(),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => MoviesProvider()..loadAll()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
+      ],
       child: const MyApp(),
     ),
   );
@@ -22,12 +26,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final themeMode = context.watch<ThemeProvider>().themeMode;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'COSMOS CINEMA',
-      theme: AppTheme.dark,
-      darkTheme: AppTheme.light,
-      themeMode: ThemeMode.light,
+      theme: AppTheme.light,
+      darkTheme: AppTheme.dark,
+      themeMode: themeMode,
       home: const LoginScreen(),
     );
   }
