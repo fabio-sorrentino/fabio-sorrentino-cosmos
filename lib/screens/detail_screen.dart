@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
+import '../models/movie.dart';
 
 class DetailScreen extends StatelessWidget {
-  const DetailScreen({super.key});
+  final Movie movie;
+  const DetailScreen({super.key, required this.movie});
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: Center(child: Text('Detail'))),
+    return  Scaffold(
+      appBar: AppBar(title: const Text('Dettaglio')),
+      body: Center(child: Text(movie.title)),
     );
   }
 }

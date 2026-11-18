@@ -1,3 +1,7 @@
+/*
+Icons.wb_sunny_outlined → MODALITÀ CHIARA
+Icons.nightlight_outlined→ MODALITÀ SCURA
+*/
 import 'package:flutter/material.dart';
 
 class SettingsScreen extends StatelessWidget {
