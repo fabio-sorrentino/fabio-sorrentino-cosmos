@@ -26,14 +26,16 @@ class DetailScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
         scrolledUnderElevation: 0,
         title: Text('Dettaglio', style: textTheme.titleMedium),
         actions: [
           IconButton(
-            tooltip: isFavorite ? 'Togli dai preferiti' : 'Aggiungi ai preferiti',
+            tooltip: isFavorite
+                ? 'Togli dai preferiti'
+                : 'Aggiungi ai preferiti',
             icon: Icon(isFavorite ? Icons.favorite : Icons.favorite_border),
-            onPressed: () => context.read<UserListsProvider>().toggleFavorite(movie),
+            onPressed: () =>
+                context.read<UserListsProvider>().toggleFavorite(movie),
           ),
         ],
       ),
@@ -86,7 +88,8 @@ class DetailScreen extends StatelessWidget {
 
           PrimaryButton(
             label: isSeen ? 'Visto ✓' : 'Segna come visto',
-            onPressed: () => context.read<UserListsProvider>().toggleSeen(movie),
+            onPressed: () =>
+                context.read<UserListsProvider>().toggleSeen(movie),
           ),
           const SizedBox(height: 12),
 
