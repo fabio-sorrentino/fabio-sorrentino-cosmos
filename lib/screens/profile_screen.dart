@@ -6,6 +6,10 @@ import '../data/demo_user.dart';
 import '../screens/login_screen.dart';
 import '../screens/settings_screen.dart';
 
+import 'package:provider/provider.dart';
+
+import '../providers/user_lists_provider.dart';
+
 import 'package:flutter/material.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -23,6 +27,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final lists = context.watch<UserListsProvider>();
 
     return Scaffold(
       appBar: AppBar(title: const Text('Profilo')),
@@ -44,20 +49,26 @@ class ProfileScreen extends StatelessWidget {
               DemoUser.name,
               textAlign: TextAlign.center,
               style: textTheme.bodyMedium,
-              ),
-              const SizedBox(height: 10),
+            ),
+            const SizedBox(height: 10),
             Text(
               DemoUser.email,
               textAlign: TextAlign.center,
               style: textTheme.bodySmall,
             ),
             const SizedBox(height: 24),
-            const Row(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                _Stat(icon: Icons.movie_outlined, value: '12'),
-                _Stat(icon: Icons.tv, value: '9'),
-                _Stat(icon: Icons.star_border, value: '5'),
+                _Stat(
+                  icon: Icons.movie_outlined,
+                  value: '${lists.seenMoviesCount}',
+                ),
+                _Stat(icon: Icons.tv, value: '${lists.seenSeriesCount}'),
+                _Stat(
+                  icon: Icons.favorite_border,
+                  value: '${lists.favoritesCount}',
+                ),
               ],
             ),
             const SizedBox(height: 24),
