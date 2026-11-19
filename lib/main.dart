@@ -1,3 +1,5 @@
+import 'package:cosmos/screens/catalog_screen.dart';
+import 'package:cosmos/screens/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import './providers/movies_provider.dart';

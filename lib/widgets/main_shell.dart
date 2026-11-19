@@ -15,7 +15,6 @@ class MainShell extends StatefulWidget {
 
 class _MainShellState extends State<MainShell> {
   int _index = 0;
-  int? _hoveredIndex;
 
   final _pages = const [
     HomeScreen(),
@@ -24,85 +23,54 @@ class _MainShellState extends State<MainShell> {
     ProfileScreen(),
   ];
 
-  // Widget personalizzato per ogni icona
-  Widget _buildNavItem(
-    int index,
-    IconData selectedIcon,
-    IconData unselectedIcon,
-  ) {
-    final bool isSelected = _index == index;
-    final bool isHovered = _hoveredIndex == index;
-
-    // Colori che cambiano in base al tema
-    final dark = Theme.of(context).brightness == Brightness.dark;
-    final activeBg = dark ? AppColors.secondary : AppColors.tertiary;
-    final iconColor = dark ? AppColors.lightBg : AppColors.primary;
-
-    return MouseRegion(
-      onEnter: (_) {
-        setState(() {
-          _hoveredIndex = index;
-        });
-      },
-      onExit: (_) {
-        setState(() {
-          _hoveredIndex = null;
-        });
-      },
-      child: GestureDetector(
-        onTap: () {
-          setState(() {
-            _index = index;
-          });
-        },
-        child: AnimatedContainer(
-          duration: const Duration(milliseconds: 200),
-          width: 46,
-          height: 46,
-          decoration: BoxDecoration(
-            color: isSelected || isHovered ? activeBg : Colors.transparent,
-            borderRadius: BorderRadius.circular(15),
-          ),
-          child: Center(
-            child: Icon(
-              isSelected ? selectedIcon : unselectedIcon,
-              size: 35,
-              color: iconColor,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
-    final barColor = dark ? AppColors.disabledPrimary : AppColors.disabledSurfaceLight;
+    final barColor = dark ? AppColors.primary : AppColors.surfaceLight;
+    final activeBg = dark ? AppColors.secondary : AppColors.tertiary;
+    final iconColor = dark ? AppColors.lightBg : AppColors.primary;
 
     return Scaffold(
+      extendBody: true,
       body: IndexedStack(index: _index, children: _pages),
-
-      bottomNavigationBar: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-          child: Container(
-            width: double.infinity,
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(35),
+          child: NavigationBar(
             height: 83,
-            decoration: BoxDecoration(
-              color: barColor.withValues(alpha: 0.8),
-              borderRadius: BorderRadius.circular(35),
+            elevation: 0,
+            surfaceTintColor: Colors.transparent,
+            backgroundColor: barColor.withValues(alpha: 0.8),
+            indicatorColor: activeBg,
+            indicatorShape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(15),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                _buildNavItem(0, Icons.home, Icons.home_outlined),
-                _buildNavItem(1, Icons.search, Icons.search_outlined),
-                _buildNavItem(2, Icons.bookmark, Icons.bookmark_border),
-                _buildNavItem(3, Icons.person, Icons.person_outlined),
-              ],
-            ),
+            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+            selectedIndex: _index,
+            onDestinationSelected: (i) => setState(() => _index = i),
+            destinations: [
+              NavigationDestination(
+                icon: Icon(Icons.home_outlined, color: iconColor, size: 32),
+                selectedIcon: Icon(Icons.home, color: iconColor, size: 32),
+                label: 'Home',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.search_outlined, color: iconColor, size: 32),
+                selectedIcon: Icon(Icons.search, color: iconColor, size: 32),
+                label: 'Catalogo',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.bookmark_border, color: iconColor, size: 32),
+                selectedIcon: Icon(Icons.bookmark, color: iconColor, size: 32),
+                label: 'Lista',
+              ),
+              NavigationDestination(
+                icon: Icon(Icons.person_outlined, color: iconColor, size: 32),
+                selectedIcon: Icon(Icons.person, color: iconColor, size: 32),
+                label: 'Profilo',
+              ),
+            ],
           ),
         ),
       ),
