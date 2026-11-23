@@ -14,8 +14,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      body: SafeArea(child: Center(child: Text('Home'))),
+    return Scaffold(
+      appBar: AppBar(
+        automaticallyImplyLeading: false,
+        titleSpacing: 6,
+        title: Row(
+          children: [
+            Image.asset('assets/images/cosmos-logo.png', height: 40),
+            const SizedBox(width: 8),
+            const Text('Home'),
+          ],
+        ),
+      ),
     );
   }
 }
