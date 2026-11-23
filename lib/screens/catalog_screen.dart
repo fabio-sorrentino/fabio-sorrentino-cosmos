@@ -23,7 +23,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
   int _category = 0; // posizione in _categories
   String _query = '';
 
-  // Applica categoria, tipo e ricerca
+// Apply category, type, and search
   List<Movie> _visibleMovies(MoviesProvider p) {
     final movies = [
       p.popularMovies,
@@ -52,7 +52,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
     final textTheme = Theme.of(context).textTheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
 
-    // Barra di ricerca
+    // Style Searchbar
     final searchBg = dark
         ? AppColors.disabledPrimary
         : AppColors.disabledSurfaceLight;
@@ -60,7 +60,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
     final searchHint = dark ? AppColors.lightBg : AppColors.primary;
     final searchText = dark ? AppColors.white : AppColors.primary;
 
-    // Chip e pulsante filtri
+    // Chip and button filters
     final chipBg = dark ? AppColors.disabledPrimary : AppColors.lightBg;
     final chipFg = dark ? AppColors.lightBg : AppColors.primary;
     final chipSelBg = dark ? AppColors.activeTertiary : AppColors.activeTertiary;
@@ -98,7 +98,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16),
         child: Column(
           children: [
-            // Barra di ricerca
+            // Searchbar
             const SizedBox(height: 18),
             TextField(
               onChanged: (value) => setState(() => _query = value),
@@ -122,7 +122,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
             ),
             const SizedBox(height: 12),
 
-            // Chip del tipo + menu delle categorie
+            // Chip-style items + category menu
             Row(
               children: [
                 for (var i = 0; i < _types.length; i++)
@@ -166,7 +166,7 @@ class _CatalogScreenState extends State<CatalogScreen> {
             ),
             const SizedBox(height: 8),
 
-            // Griglia di locandine
+            // Grid of posters
             Expanded(
               child: visible.isEmpty
                   ? Center(

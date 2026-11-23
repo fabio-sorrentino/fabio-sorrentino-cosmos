@@ -16,7 +16,7 @@ class LoginScreenState extends State<LoginScreen> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  // Messaggio d'errore mostrato sotto i campi (null = nessun errore)
+  // Error message displayed below the fields (null = no error)
   String? _error;
 
   @override
@@ -44,7 +44,7 @@ class LoginScreenState extends State<LoginScreen> {
       return;
     }
 
-    // Credenziali giuste: apre la Home e toglie il Login dalla cronologia
+    // Correct credentials: opens the Home page and removes the Login from the history
     Navigator.pushReplacement(
       context,
       MaterialPageRoute(builder: (_) => const MainShell()),
@@ -103,7 +103,7 @@ class LoginScreenState extends State<LoginScreen> {
                     ),
                     const SizedBox(height: 12),
 
-                    // Messaggio d'errore (compare solo se _error non è null)
+                    // Error message (appears only if _error is not null)
                     if (_error != null)
                       Padding(
                         padding: const EdgeInsets.only(bottom: 12),
