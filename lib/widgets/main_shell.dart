@@ -23,54 +23,69 @@ class _MainShellState extends State<MainShell> {
     ProfileScreen(),
   ];
 
+  static const _items = [
+    (Icons.home_outlined, Icons.home, 'Home'),
+    (Icons.search_outlined, Icons.search, 'Catalogo'),
+    (Icons.bookmark_border, Icons.bookmark, 'Lista'),
+    (Icons.person_outlined, Icons.person, 'Profilo'),
+  ];
+
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
-    final barColor = dark ? AppColors.primary : AppColors.surfaceLight;
+    final barColor = dark
+        ? AppColors.disabledPrimary
+        : AppColors.disabledSurfaceLight;
     final activeBg = dark ? AppColors.secondary : AppColors.tertiary;
     final iconColor = dark ? AppColors.lightBg : AppColors.primary;
 
     return Scaffold(
       extendBody: true,
       body: IndexedStack(index: _index, children: _pages),
-      bottomNavigationBar: Padding(
-        padding: const EdgeInsets.fromLTRB(24, 0, 24, 16),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(35),
-          child: NavigationBar(
-            height: 83,
-            elevation: 0,
-            surfaceTintColor: Colors.transparent,
-            backgroundColor: barColor.withValues(alpha: 0.8),
-            indicatorColor: activeBg,
-            indicatorShape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(15),
+      bottomNavigationBar: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(24, 0, 24, 8),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(35),
+            child: Container(
+              height: 83,
+              color: barColor.withValues(alpha: 0.8),
+              child: Row(
+                children: List.generate(_items.length, (i) {
+                  final selected = i == _index;
+                  final item = _items[i];
+                  return Expanded(
+                    child: Semantics(
+                      button: true,
+                      selected: selected,
+                      label: item.$3,
+                      child: GestureDetector(
+                        behavior: HitTestBehavior.opaque,
+                        onTap: () => setState(() => _index = i),
+                        child: Center(
+                          child: AnimatedContainer(
+                            duration: const Duration(milliseconds: 200),
+                            width: 54,
+                            height: 54,
+                            alignment: Alignment.center,
+                            decoration: BoxDecoration(
+                              color: selected ? activeBg : Colors.transparent,
+                              borderRadius: BorderRadius.circular(15),
+                            ),
+                            child: Icon(
+                              selected ? item.$2 : item.$1,
+                              color: iconColor,
+                              size: 32,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  );
+                }),
+              ),
             ),
-            labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
-            selectedIndex: _index,
-            onDestinationSelected: (i) => setState(() => _index = i),
-            destinations: [
-              NavigationDestination(
-                icon: Icon(Icons.home_outlined, color: iconColor, size: 32),
-                selectedIcon: Icon(Icons.home, color: iconColor, size: 32),
-                label: 'Home',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.search_outlined, color: iconColor, size: 32),
-                selectedIcon: Icon(Icons.search, color: iconColor, size: 32),
-                label: 'Catalogo',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.bookmark_border, color: iconColor, size: 32),
-                selectedIcon: Icon(Icons.bookmark, color: iconColor, size: 32),
-                label: 'Lista',
-              ),
-              NavigationDestination(
-                icon: Icon(Icons.person_outlined, color: iconColor, size: 32),
-                selectedIcon: Icon(Icons.person, color: iconColor, size: 32),
-                label: 'Profilo',
-              ),
-            ],
           ),
         ),
       ),
