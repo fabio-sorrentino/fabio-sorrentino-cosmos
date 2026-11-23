@@ -25,26 +25,29 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
     final textTheme = Theme.of(context).textTheme;
     final dark = Theme.of(context).brightness == Brightness.dark;
 
-    // Stessi colori delle chip del Catalogo
+    // Same colors as the chips in the catalog
     final chipBg = dark ? AppColors.disabledPrimary : AppColors.lightBg;
     final chipFg = dark ? AppColors.lightBg : AppColors.primary;
-    final chipSelBg = dark ? AppColors.activeTertiary : AppColors.activeTertiary;
+    final chipSelBg = dark
+        ? AppColors.activeTertiary
+        : AppColors.activeTertiary;
 
-    final items =
-        lists.watchlist.where((m) => m.isSeries == (_type == 1)).toList();
+    final items = lists.watchlist
+        .where((m) => m.isSeries == (_type == 1))
+        .toList();
 
     return Scaffold(
       appBar: AppBar(
         scrolledUnderElevation: 0,
         titleSpacing: 24,
-        title: Text('La mia lista',),
+        title: Text('La mia lista'),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
-            // Chip larghe, una per metà schermo
-            const SizedBox(height: 18 ),
+            // Wide chips, one for half the screen
+            const SizedBox(height: 18),
             Row(
               children: [
                 for (var i = 0; i < _types.length; i++) ...[
@@ -76,7 +79,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
             ),
             const SizedBox(height: 24),
 
-            // Lista di righe
+            // List of rows
             Expanded(
               child: items.isEmpty
                   ? Center(
@@ -102,7 +105,7 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
   }
 }
 
-// Una riga: locandina a sinistra, titolo e tag a destra
+// One row: poster on the left, title and tags on the right
 class _WatchlistRow extends StatelessWidget {
   final Movie movie;
 

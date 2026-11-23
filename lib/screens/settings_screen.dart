@@ -12,7 +12,6 @@ class SettingsScreen extends StatelessWidget {
     final themeProvider = context.watch<ThemeProvider>();
     final textTheme = Theme.of(context).textTheme;
     final isDark = themeProvider.themeMode == ThemeMode.dark;
-
     return Scaffold(
       appBar: AppBar(title: const Text('Impostazioni')),
       body: ListView(
@@ -26,6 +25,7 @@ class SettingsScreen extends StatelessWidget {
           Row(
             children: [
               Expanded(child: Text('Tema', style: textTheme.bodyMedium)),
+              //Button Light Mode
               _ModeButton(
                 icon: Icons.wb_sunny_outlined,
                 label: 'Tema chiaro',
@@ -36,6 +36,7 @@ class SettingsScreen extends StatelessWidget {
                 },
               ),
               const SizedBox(width: 12),
+              //Button Dark Mode
               _ModeButton(
                 icon: Icons.nightlight_outlined,
                 label: 'Tema scuro',
