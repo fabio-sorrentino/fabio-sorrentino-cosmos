@@ -1,3 +1,4 @@
+//Login credentials
 class DemoUser {
   static const name = 'fabio-cosmos';
   static const email = 'fabio@gmail.com';
