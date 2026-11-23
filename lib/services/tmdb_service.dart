@@ -5,6 +5,7 @@ import 'package:http/http.dart' as http;
 import '../config/api_keys.dart';
 import '../models/movie.dart';
 
+//Base URL API
 class TmdbService {
   static const _baseUrl = 'https://api.themoviedb.org/3';
 
@@ -19,7 +20,7 @@ class TmdbService {
       uri,
       headers: {
         'accept': 'application/json',
-        'Authorization': 'Bearer ${ApiKeys.tmdbToken}',
+        'Authorization': 'Bearer ${ApiKeys.tmdbToken}',   //Authorization
       },
     );
     if (response.statusCode != 200) {
@@ -36,7 +37,7 @@ class TmdbService {
         )
         .toList();
   }
-
+//Filter Popular, Upcoming and Top Rated
   Future<List<Movie>> getPopularMovies({int page = 1}) =>
       _fetch('movie/popular', isSeries: false, page: page);
 
