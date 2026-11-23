@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Colori
+  // Color
   static const primary = Color(0xFF08085B);
   static const secondary = Color(0xFF087CB8);
   static const tertiary = Color(0xFF00B5D4);
@@ -39,6 +39,7 @@ class AppColors {
   static const error = Color(0xFF3B2F8F);
 }
 
+//Theme
 class AppTheme {
   static final ThemeData dark = _build(
     brightness: Brightness.dark,
@@ -87,7 +88,7 @@ class AppTheme {
       useMaterial3: true,
       brightness: brightness,
 
-      // Font principale
+      // Main Font
       fontFamily: 'Inter',
 
       scaffoldBackgroundColor: background,
@@ -104,7 +105,7 @@ class AppTheme {
         onError: AppColors.white,
       ),
 
-      // Stili dei testi
+      // Text styles
       textTheme: TextTheme(
         displayLarge: TextStyle(
           color: text,
@@ -143,7 +144,7 @@ class AppTheme {
         ),
       ),
 
-      // Bottoni pieni ("Accedi", "Segna come visto")
+      // Button ("Accedi", "Segna come visto")
       filledButtonTheme: FilledButtonThemeData(
         style: FilledButton.styleFrom(
           backgroundColor: buttonBg,
@@ -153,7 +154,7 @@ class AppTheme {
         ),
       ),
 
-      // Campi di testo (Email, Password)
+      // Text Fields (Email, Password)
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
         fillColor: fieldFill,

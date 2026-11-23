@@ -34,13 +34,13 @@ class CustomTextFieldState extends State<CustomTextField> {
       child: TextField(
         controller: widget.controller,
 
-        // Colore del testo digitato
+        // Color of typed text
         style: const TextStyle(color: AppColors.primary, fontSize: 16),
 
-        // Colore del cursore
+        // Cursor color
         cursorColor: AppColors.primary,
 
-        // Nasconde il testo se è una password
+        //Hides the text if it is a password
         obscureText: widget.isPassword ? isObscured : false,
 
         decoration: InputDecoration(
@@ -50,18 +50,18 @@ class CustomTextFieldState extends State<CustomTextField> {
           ),
           fillColor: AppColors.lightBg.withValues(alpha: 0.8),
 
-          // Colore delle icone
+          // Icon color
           prefixIconColor: AppColors.primary,
           suffixIconColor: AppColors.primary,
 
-          // Colore del suggerimento
+          // Hint color
           hintStyle: const TextStyle(color: AppColors.primary),
 
           hintText: widget.hintText,
 
           prefixIcon: Icon(widget.prefixIcon),
 
-          // Pulsante mostra/nascondi password
+          // Show/hide password button
           suffixIcon: widget.isPassword
               ? IconButton(
                   onPressed: () {

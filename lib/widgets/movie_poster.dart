@@ -8,7 +8,7 @@ class MoviePoster extends StatelessWidget {
 
   const MoviePoster({super.key, required this.movie, this.onTap});
 
-  // Riquadro di riserva, scritto una volta sola
+  // Reserve box, written only once
   Widget _placeholder(BuildContext context) {
     return Container(
       color: Theme.of(context).colorScheme.surface,

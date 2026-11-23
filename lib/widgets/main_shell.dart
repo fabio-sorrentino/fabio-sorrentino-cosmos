@@ -22,14 +22,14 @@ class _MainShellState extends State<MainShell> {
     WatchlistScreen(),
     ProfileScreen(),
   ];
-
+//Icons
   static const _items = [
     (Icons.home_outlined, Icons.home, 'Home'),
     (Icons.search_outlined, Icons.search, 'Catalogo'),
     (Icons.bookmark_border, Icons.bookmark, 'Lista'),
     (Icons.person_outlined, Icons.person, 'Profilo'),
   ];
-
+//Bottom Navigation Bar
   @override
   Widget build(BuildContext context) {
     final dark = Theme.of(context).brightness == Brightness.dark;
