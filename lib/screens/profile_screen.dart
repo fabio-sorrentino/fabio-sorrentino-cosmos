@@ -1,7 +1,3 @@
-/*
-Icons.logout → LOGOUT
-Icons.settings_outlined → IMPOSTAZIONI
-*/
 import '../data/demo_user.dart';
 import '../screens/login_screen.dart';
 import '../screens/settings_screen.dart';
@@ -83,11 +79,6 @@ class ProfileScreen extends StatelessWidget {
                 context,
                 MaterialPageRoute(builder: (_) => const SettingsScreen()),
               ),
-            ),
-            _ProfileTile(
-              icon: Icons.notifications_none,
-              label: 'Notifiche',
-              onTap: () {},
             ),
 
             _ProfileTile(

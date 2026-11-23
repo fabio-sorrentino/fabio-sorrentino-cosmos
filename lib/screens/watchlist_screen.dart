@@ -37,16 +37,14 @@ class _WatchlistScreenState extends State<WatchlistScreen> {
       appBar: AppBar(
         scrolledUnderElevation: 0,
         titleSpacing: 24,
-        title: Text(
-          'La mia lista',
-          style: textTheme.bodyLarge?.copyWith(fontWeight: FontWeight.w700),
-        ),
+        title: Text('La mia lista',),
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 24),
         child: Column(
           children: [
             // Chip larghe, una per metà schermo
+            const SizedBox(height: 18 ),
             Row(
               children: [
                 for (var i = 0; i < _types.length; i++) ...[
