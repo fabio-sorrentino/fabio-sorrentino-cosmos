@@ -6,6 +6,7 @@ import './providers/theme_provider.dart';
 import './providers/user_lists_provider.dart';
 import './screens/login_screen.dart';
 import './theme/app_theme.dart';
+import './providers/favorites_provider.dart';
 
 void main() {
   runApp(
@@ -14,6 +15,7 @@ void main() {
         ChangeNotifierProvider(create: (_) => MoviesProvider()..loadAll()),
         ChangeNotifierProvider(create: (_) => ThemeProvider()),
         ChangeNotifierProvider(create: (_) => UserListsProvider()),
+        ChangeNotifierProvider(create: (_) => FavoritesProvider()..load()),
       ],
       child: const MyApp(),
     ),
