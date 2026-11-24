@@ -5,8 +5,18 @@ import '../models/movie.dart';
 class MoviePoster extends StatelessWidget {
   final Movie movie;
   final VoidCallback? onTap;
+  final bool useBackdrop;
+  final double aspectRatio;
+  final double radius;
 
-  const MoviePoster({super.key, required this.movie, this.onTap});
+  const MoviePoster({
+    super.key,
+    required this.movie,
+    this.onTap,
+    this.useBackdrop = false,
+    this.aspectRatio = 2 / 3,
+    this.radius = 12,
+  });
 
   // Reserve box, written only once
   Widget _placeholder(BuildContext context) {
@@ -24,15 +34,19 @@ class MoviePoster extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final url = useBackdrop
+        ? (movie.backdropUrl ?? movie.posterUrl)
+        : movie.posterUrl;
+
     return GestureDetector(
       onTap: onTap,
       child: AspectRatio(
-        aspectRatio: 2 / 3,
+        aspectRatio: aspectRatio,
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: movie.posterUrl != null
+          borderRadius: BorderRadius.circular(radius),
+          child: url != null
               ? Image.network(
-                  movie.posterUrl!,
+                  url,
                   fit: BoxFit.cover,
                   errorBuilder: (context, error, stackTrace) =>
                       _placeholder(context),
