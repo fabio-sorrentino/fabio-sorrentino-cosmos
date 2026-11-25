@@ -1,17 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-
+import '../theme/app_theme.dart';
 import '../models/movie.dart';
 import '../providers/movies_provider.dart';
 import '../widgets/movie_poster.dart';
 import '../screens/detail_screen.dart';
 import '../screens/favorites_screen.dart';
 
-
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
-
 
   void _openDetail(BuildContext context, Movie movie) {
     Navigator.push(
@@ -20,7 +18,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
   Widget _sectionTitle(String text) {
     return Text(
       text,
@@ -28,10 +25,8 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
   Widget _section(BuildContext context, String title, List<Movie> movies) {
     if (movies.isEmpty) return const SizedBox.shrink();
-
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -60,20 +55,18 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
-
   @override
   Widget build(BuildContext context) {
     final provider = context.watch<MoviesProvider>();
     final popularMovies = provider.popularMovies;
     final popularSeries = provider.popularSeries;
-
+    final dark = Theme.of(context).brightness == Brightness.dark;
+    final iconColor = dark ? AppColors.white : AppColors.primary;
 
     //Big card movie (temporary): null if the list is too short
     final Movie? featured = popularMovies.length > 1 ? popularMovies[1] : null;
 
-
     final noData = popularMovies.isEmpty && popularSeries.isEmpty;
-
 
     Widget body;
     if (provider.isLoading && noData) {
@@ -121,7 +114,6 @@ class HomeScreen extends StatelessWidget {
       );
     }
 
-
     return Scaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
@@ -130,15 +122,13 @@ class HomeScreen extends StatelessWidget {
           children: [
             Image.asset('assets/images/cosmos-logo.png', height: 32),
             const SizedBox(width: 8),
-            const Text(
-              'COSMOS',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            const Text('COSMOS', style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.favorite_border, color: Colors.white),
+            tooltip: 'Preferiti',
+            icon: Icon(Icons.favorite_border, color: iconColor),
             onPressed: () => Navigator.push(
               context,
               MaterialPageRoute(builder: (_) => const FavoritesScreen()),
@@ -151,4 +141,3 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-

@@ -1,7 +1,7 @@
 import '../data/demo_user.dart';
 import '../screens/login_screen.dart';
 import '../screens/settings_screen.dart';
-
+import '../theme/app_theme.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_lists_provider.dart';
@@ -23,6 +23,7 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final scheme = Theme.of(context).colorScheme;
     final textTheme = Theme.of(context).textTheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
     final lists = context.watch<UserListsProvider>();
 
     return Scaffold(
@@ -103,6 +104,7 @@ class _Stat extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final textTheme = Theme.of(context).textTheme;
+    final dark = Theme.of(context).brightness == Brightness.dark;
 
     return Column(
       children: [
@@ -111,7 +113,11 @@ class _Stat extends StatelessWidget {
           style: textTheme.titleLarge?.copyWith(fontWeight: FontWeight.w700),
         ),
         const SizedBox(height: 6),
-        Icon(icon, size: 24),
+        Icon(
+          icon,
+          size: 24,
+          color: dark ? AppColors.lightBg : AppColors.primary,
+        ),
       ],
     );
   }
