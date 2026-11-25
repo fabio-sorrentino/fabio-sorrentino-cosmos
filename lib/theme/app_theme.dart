@@ -64,7 +64,7 @@ class AppTheme {
     onPrimary: AppColors.white,
     text: AppColors.primary,
     textMuted: AppColors.activeSecondary,
-    // campi di testo e bottone (come il Figma)
+    //Text fields and button
     fieldFill: AppColors.disabledPrimary,
     onField: AppColors.lightBg,
     buttonBg: AppColors.primary,
