@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../models/movie.dart';
 import '../providers/user_lists_provider.dart';
 import '../widgets/primary_button.dart';
+import '../widgets/cast_section.dart';
 
 class DetailScreen extends StatelessWidget {
   final Movie movie;
@@ -84,6 +85,9 @@ class DetailScreen extends StatelessWidget {
             movie.overview.isEmpty ? 'Trama non disponibile' : movie.overview,
             style: textTheme.bodyMedium,
           ),
+          const SizedBox(height: 28),
+          const SizedBox(height: 24),
+          CastSection(movie: movie),
           const SizedBox(height: 28),
 
           PrimaryButton(
