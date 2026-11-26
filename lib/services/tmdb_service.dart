@@ -3,15 +3,16 @@ import 'package:http/http.dart' as http;
 import '../config/api_keys.dart';
 import '../models/cast_member.dart';
 import '../models/movie.dart';
+import '../models/person.dart';
 
 class TmdbService {
   static const _baseUrl = 'https://api.themoviedb.org/3';
 
-  // Downloads a raw list from TMDB in the given language
-  Future<List<Map<String, dynamic>>> _getRaw(
-    String path, {
-    required String language,
-    required int page,
+  // Generic request: returns the JSON object of a TMDB endpoint
+  Future<Map<String, dynamic>> _getJson(
+    String path,
+    String language, {
+    int page = 1,
   }) async {
     final uri = Uri.parse('$_baseUrl/$path').replace(
       queryParameters: {'language': language, 'page': '$page'},
@@ -28,25 +29,27 @@ class TmdbService {
     if (response.statusCode != 200) {
       throw Exception('Errore TMDB: ${response.statusCode}');
     }
-
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    return (data['results'] as List).cast<Map<String, dynamic>>();
+    return jsonDecode(response.body) as Map<String, dynamic>;
   }
 
-  bool _isEmpty(dynamic overview) => (overview ?? '').toString().trim().isEmpty;
+  bool _isEmpty(dynamic text) => (text ?? '').toString().trim().isEmpty;
 
+  // Downloads one list and fills missing Italian overviews with the English ones
   Future<List<Movie>> _fetch(
     String path, {
     required bool isSeries,
     int page = 1,
   }) async {
-    final results = await _getRaw(path, language: 'it-IT', page: page);
+    final json = await _getJson(path, 'it-IT', page: page);
+    final results = (json['results'] as List).cast<Map<String, dynamic>>();
 
-    // If some Italian overviews are missing, take them from the English version
     if (results.any((j) => _isEmpty(j['overview']))) {
       try {
-        final english = await _getRaw(path, language: 'en-US', page: page);
-        final overviews = {for (final j in english) j['id']: j['overview']};
+        final en = await _getJson(path, 'en-US', page: page);
+        final overviews = {
+          for (final j in (en['results'] as List).cast<Map<String, dynamic>>())
+            j['id']: j['overview'],
+        };
 
         for (final j in results) {
           if (_isEmpty(j['overview'])) {
@@ -54,7 +57,7 @@ class TmdbService {
           }
         }
       } catch (_) {
-        // If the second request fails, keep the Italian lists
+        // If the English request fails, keep the Italian lists
       }
     }
 
@@ -83,23 +86,42 @@ class TmdbService {
   // Cast of a single movie or series (first 15 actors)
   Future<List<CastMember>> getCast(Movie movie) async {
     final type = movie.isSeries ? 'tv' : 'movie';
-    final uri = Uri.parse('$_baseUrl/$type/${movie.id}/credits')
-        .replace(queryParameters: {'language': 'it-IT'});
-
-    final response = await http.get(
-      uri,
-      headers: {
-        'accept': 'application/json',
-        'Authorization': 'Bearer ${ApiKeys.tmdbToken}',
-      },
-    );
-
-    if (response.statusCode != 200) {
-      throw Exception('Errore TMDB: ${response.statusCode}');
-    }
-
-    final data = jsonDecode(response.body) as Map<String, dynamic>;
-    final cast = (data['cast'] as List).cast<Map<String, dynamic>>();
+    final json = await _getJson('$type/${movie.id}/credits', 'it-IT');
+    final cast = (json['cast'] as List).cast<Map<String, dynamic>>();
     return cast.take(15).map(CastMember.fromJson).toList();
   }
-} // <- last brace: closes the TmdbService class
+
+  // Actor details; if the Italian biography is empty, uses the English one
+  Future<Person> getPerson(int id) async {
+    final json = await _getJson('person/$id', 'it-IT');
+
+    if (_isEmpty(json['biography'])) {
+      try {
+        final en = await _getJson('person/$id', 'it-IT');
+        json['biography'] = en['biography'] ?? '';
+      } catch (_) {
+        // Keep the empty biography
+      }
+    }
+    return Person.fromJson(json);
+  }
+
+  // Movies and series of an actor, most popular first (max 15)
+  Future<List<Movie>> getPersonCredits(int id) async {
+    final json = await _getJson('person/$id/combined_credits', 'it-IT');
+
+    final cast = (json['cast'] as List)
+        .cast<Map<String, dynamic>>()
+        .where((j) => j['poster_path'] != null)
+        .toList()
+      ..sort(
+        (a, b) => ((b['popularity'] ?? 0) as num)
+            .compareTo((a['popularity'] ?? 0) as num),
+      );
+
+    return cast
+        .take(15)
+        .map((j) => Movie.fromJson(j, isSeries: j['media_type'] == 'tv'))
+        .toList();
+  }
+} //
