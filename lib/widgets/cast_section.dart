@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../models/cast_member.dart';
 import '../models/movie.dart';
+import '../screens/actor_screen.dart';
 import '../services/tmdb_service.dart';
 
 class CastSection extends StatefulWidget {
@@ -66,7 +67,7 @@ class _CastSectionState extends State<CastSection> {
   }
 }
 
-// Photo, actor name and character
+// Photo, actor name and character: tap to open the actor screen
 class _CastCard extends StatelessWidget {
   final CastMember member;
 
@@ -84,41 +85,47 @@ class _CastCard extends StatelessWidget {
       child: const Icon(Icons.person, size: 40),
     );
 
-    return SizedBox(
-      width: 90,
-      child: Column(
-        children: [
-          ClipOval(
-            child: member.photoUrl != null
-                ? Image.network(
-                    member.photoUrl!,
-                    width: 80,
-                    height: 80,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => placeholder,
-                  )
-                : placeholder,
-          ),
-          const SizedBox(height: 8),
-          Text(
-            member.name,
-            maxLines: 2,
-            overflow: TextOverflow.ellipsis,
-            textAlign: TextAlign.center,
-            style: textTheme.bodyMedium?.copyWith(
-              fontSize: 12,
-              fontWeight: FontWeight.w700,
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ActorScreen(member: member)),
+      ),
+      child: SizedBox(
+        width: 90,
+        child: Column(
+          children: [
+            ClipOval(
+              child: member.photoUrl != null
+                  ? Image.network(
+                      member.photoUrl!,
+                      width: 80,
+                      height: 80,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => placeholder,
+                    )
+                  : placeholder,
             ),
-          ),
-          if (member.character.isNotEmpty)
+            const SizedBox(height: 8),
             Text(
-              member.character,
+              member.name,
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               textAlign: TextAlign.center,
-              style: textTheme.bodySmall,
+              style: textTheme.bodyMedium?.copyWith(
+                fontSize: 12,
+                fontWeight: FontWeight.w700,
+              ),
             ),
-        ],
+            if (member.character.isNotEmpty)
+              Text(
+                member.character,
+                maxLines: 2,
+                overflow: TextOverflow.ellipsis,
+                textAlign: TextAlign.center,
+                style: textTheme.bodySmall,
+              ),
+          ],
+        ),
       ),
     );
   }
