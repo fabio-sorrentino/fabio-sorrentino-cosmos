@@ -30,7 +30,7 @@ jobs:
           token = os.environ.get("TMDB_TOKEN")
           if not token:
               raise SystemExit("Add the TMDB_TOKEN repository secret before building.")
-
+          Path("lib/config").mkdir(parents=True, exist_ok=True)
           Path("lib/config/api_keys.dart").write_text(
               "class ApiKeys {\n"
               f"  static const tmdbToken = {json.dumps(token)};\n"
