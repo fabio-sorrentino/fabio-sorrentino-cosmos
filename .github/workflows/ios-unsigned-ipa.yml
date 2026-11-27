@@ -1,0 +1,53 @@
+name: Build unsigned iOS IPA
+
+on:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Set up Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+
+      - name: Create TMDB API key file
+        env:
+          TMDB_TOKEN: ${{ secrets.TMDB_TOKEN }}
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          token = os.environ.get("TMDB_TOKEN")
+          if not token:
+              raise SystemExit("Add the TMDB_TOKEN repository secret before building.")
+
+          Path("lib/config/api_keys.dart").write_text(
+              "class ApiKeys {\n"
+              f"  static const tmdbToken = {json.dumps(token)};\n"
+              "}\n",
+              encoding="utf-8",
+          )
+          PY
+
+      - name: Get dependencies
+        run: flutter pub get
+
+      - name: Build unsigned IPA
+        run: flutter build ipa --release --no-codesign
+
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: cosmos-ios-unsigned-ipa
+          path: build/ios/ipa/*.ipa
+          if-no-files-found: error
