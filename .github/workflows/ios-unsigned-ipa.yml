@@ -30,6 +30,7 @@ jobs:
           token = os.environ.get("TMDB_TOKEN")
           if not token:
               raise SystemExit("Add the TMDB_TOKEN repository secret before building.")
+
           Path("lib/config").mkdir(parents=True, exist_ok=True)
           Path("lib/config/api_keys.dart").write_text(
               "class ApiKeys {\n"
@@ -42,8 +43,15 @@ jobs:
       - name: Get dependencies
         run: flutter pub get
 
-      - name: Build unsigned IPA
-        run: flutter build ipa --release --no-codesign
+      - name: Build unsigned app
+        run: flutter build ios --release --no-codesign
+
+      - name: Package unsigned IPA
+        run: |
+          mkdir -p build/ios/ipa/Payload
+          cp -R build/ios/iphoneos/Runner.app build/ios/ipa/Payload/Runner.app
+          cd build/ios/ipa
+          zip -qr cosmos-ios.ipa Payload
 
       - name: Upload IPA
         uses: actions/upload-artifact@v4
