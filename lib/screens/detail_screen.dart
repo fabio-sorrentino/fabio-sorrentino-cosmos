@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../models/movie.dart';
 import '../providers/user_lists_provider.dart';
 import '../widgets/primary_button.dart';
 import '../widgets/cast_section.dart';
+import '../widgets/skeleton.dart';
 
 class DetailScreen extends StatelessWidget {
   final Movie movie;
@@ -49,10 +51,13 @@ class DetailScreen extends StatelessWidget {
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(20),
                 child: movie.posterUrl != null
-                    ? Image.network(
-                        movie.posterUrl!,
+                    ? CachedNetworkImage(
+                        imageUrl: movie.posterUrl!,
                         fit: BoxFit.cover,
-                        errorBuilder: (_, __, ___) => _NoPoster(movie.title),
+                        fadeInDuration: const Duration(milliseconds: 250),
+                        placeholder: (context, url) => const Skeleton(),
+                        errorWidget: (context, url, error) =>
+                            _NoPoster(movie.title),
                       )
                     : _NoPoster(movie.title),
               ),

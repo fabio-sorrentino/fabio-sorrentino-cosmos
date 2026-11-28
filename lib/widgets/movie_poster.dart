@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import 'package:cached_network_image/cached_network_image.dart';
 import '../models/movie.dart';
 import '../providers/user_lists_provider.dart';
 import '../theme/app_theme.dart';
+import 'skeleton.dart';
 
 class MoviePoster extends StatelessWidget {
   final Movie movie;
@@ -60,11 +61,12 @@ class MoviePoster extends StatelessWidget {
             fit: StackFit.expand,
             children: [
               imageUrl != null
-                  ? Image.network(
-                      imageUrl,
+                  ? CachedNetworkImage(
+                      imageUrl: imageUrl,
                       fit: BoxFit.cover,
-                      errorBuilder: (context, error, stackTrace) =>
-                          _placeholder(context),
+                      fadeInDuration: const Duration(milliseconds: 250),
+                      placeholder: (context, url) => const Skeleton(),
+                      errorWidget: (context, url, error) => _placeholder(context),
                     )
                   : _placeholder(context),
 

@@ -22,7 +22,7 @@ class Movie {
   // Full poster URL (TMDB only sends a partial path)
   String? get posterUrl => posterPath == null
       ? null
-      : 'https://image.tmdb.org/t/p/w500$posterPath';
+      : 'https://image.tmdb.org/t/p/w342$posterPath';
 
   // Full backdrop URL (wide image)
   String? get backdropUrl => backdropPath == null

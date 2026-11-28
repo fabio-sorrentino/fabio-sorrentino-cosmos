@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 
 import '../models/cast_member.dart';
 import '../models/movie.dart';
 import '../screens/actor_screen.dart';
 import '../services/tmdb_service.dart';
+import 'skeleton.dart';
 
 class CastSection extends StatefulWidget {
   final Movie movie;
@@ -56,7 +58,7 @@ class _CastSectionState extends State<CastSection> {
               child: ListView.separated(
                 scrollDirection: Axis.horizontal,
                 itemCount: cast.length,
-                separatorBuilder: (_, __) => const SizedBox(width: 14),
+                separatorBuilder: (context, index) => const SizedBox(width: 14),
                 itemBuilder: (context, i) => _CastCard(member: cast[i]),
               ),
             ),
@@ -96,12 +98,14 @@ class _CastCard extends StatelessWidget {
           children: [
             ClipOval(
               child: member.photoUrl != null
-                  ? Image.network(
-                      member.photoUrl!,
+                  ? CachedNetworkImage(
+                      imageUrl: member.photoUrl!,
                       width: 80,
                       height: 80,
                       fit: BoxFit.cover,
-                      errorBuilder: (_, __, ___) => placeholder,
+                      fadeInDuration: const Duration(milliseconds: 250),
+                      placeholder: (context, url) => const Skeleton(),
+                      errorWidget: (context, url, error) => placeholder,
                     )
                   : placeholder,
             ),

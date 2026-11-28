@@ -1,6 +1,7 @@
+import 'package:cosmos/screens/splash_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-
+import './screens/splash_screen.dart';
 import './providers/movies_provider.dart';
 import './providers/theme_provider.dart';
 import './providers/user_lists_provider.dart';
@@ -38,7 +39,7 @@ class MyApp extends StatelessWidget {
       scrollBehavior: const MaterialScrollBehavior().copyWith(
         overscroll: false,
       ),
-      home: const LoginScreen(),
+      home: const SplashScreen(),
     );
   }
 }

@@ -38,6 +38,7 @@ dependencies:
   http: ^1.6.0
   flutter_svg: ^2.4.0
   shared_preferences: ^2.5.6
+  cached_network_image: ^4.0.7
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,7 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^6.0.0
+  flutter_launcher_icons: ^0.14.1
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -95,3 +97,10 @@ flutter:
   #
   # For details regarding fonts from package dependencies,
   # see https://flutter.dev/to/font-from-package
+
+flutter_launcher_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/cosmos-logo.png"
+  adaptive_icon_background: "#08085B"
+  adaptive_icon_foreground: "assets/images/cosmos-logo.png"
